@@ -17,7 +17,9 @@ class TextNode:
     # The URL of the link or image, if the text is a link. Default to None if nothing is passed in.
     url: None | str
 
-    def __init__(self, text: str, text_type: TextType, url: None | str = None):
+    def __init__(
+        self, text: str, text_type: TextType = TextType.PLAIN, url: None | str = None
+    ):
         self.text = text
         self.text_type = text_type
         self.url = url
