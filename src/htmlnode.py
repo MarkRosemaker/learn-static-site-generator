@@ -1,3 +1,6 @@
+from textnode import TextNode, TextType
+
+
 class HTMLNode:
     # A string representing the HTML tag name (e.g. "p", "a", "h1", etc.)
     tag: str
@@ -76,3 +79,21 @@ class LeafNode(HTMLNode):
 
     def __repr__(self) -> str:
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
+
+
+def text_node_to_html_node(n: TextNode) -> LeafNode:
+    match n.text_type:
+        case TextType.PLAIN:
+            return LeafNode("", n.text)
+        case TextType.BOLD:
+            return LeafNode("b", n.text)
+        case TextType.ITALIC:
+            return LeafNode("i", n.text)
+        case TextType.CODE:
+            return LeafNode("code", n.text)
+        case TextType.LINK:
+            return LeafNode("a", n.text, {"href": n.url or ""})
+        case TextType.IMAGE:
+            return LeafNode("img", "", {"src": n.url or "", "alt": n.text})
+        case _:
+            raise ValueError(f"unknown text type {n.text_type}")
