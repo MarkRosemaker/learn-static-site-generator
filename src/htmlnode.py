@@ -33,6 +33,29 @@ class HTMLNode:
         return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
 
 
+class ParentNode(HTMLNode):
+    def __init__(
+        self,
+        tag: str,
+        children: list[HTMLNode],
+        props: dict[str, str] = {},
+    ):
+        super().__init__(tag=tag, children=children, props=props)
+
+    def to_html(self) -> str:
+        if not self.tag:
+            raise ValueError("parent node is missing a tag")
+
+        if not self.children:
+            raise ValueError("parent node is missing children")
+
+        cHTML: list[str] = []
+        for c in self.children:
+            cHTML.append(c.to_html())
+
+        return f"<{self.tag}{self.props_to_html()}>{"".join(cHTML)}</{self.tag}>"
+
+
 class LeafNode(HTMLNode):
     def __init__(
         self,
