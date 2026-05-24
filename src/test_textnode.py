@@ -24,11 +24,6 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("Just plain text")
         self.assertEqual(node, node2)
 
-    def test_no_type_is_plain(self):
-        node = TextNode("Just plain text", TextType.PLAIN)
-        node2 = TextNode("Just plain text")
-        self.assertEqual(node, node2)
-
     def test_url(self):
         link = TextNode("Check out this link", TextType.LINK, "example.com")
         link2 = TextNode("Check out this link", TextType.LINK, "example.com")
