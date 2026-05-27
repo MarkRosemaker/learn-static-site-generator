@@ -34,3 +34,41 @@ def extract_markdown_images(text: str):
 
 def extract_markdown_links(text: str):
     return re.findall(r"(?<!!)\[([^\[\]]+)\]\(([^\(\)]+)\)", text)
+
+
+def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
+    new_nodes: list[TextNode] = []
+    for n in old_nodes:
+        match n.text_type:
+            case TextType.PLAIN:
+                txt = n.text
+                for img_alt, img_link in extract_markdown_images(txt):
+                    pre, txt = txt.split(f"![{img_alt}]({img_link})", 1)
+                    if pre:
+                        new_nodes.append(TextNode(pre))
+                    new_nodes.append(TextNode(img_alt, TextType.IMAGE, img_link))
+                if txt:
+                    new_nodes.append(TextNode(txt))
+            case _:
+                new_nodes.append(n)
+
+    return new_nodes
+
+
+def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
+    new_nodes: list[TextNode] = []
+    for n in old_nodes:
+        match n.text_type:
+            case TextType.PLAIN:
+                txt = n.text
+                for link_alt, link_url in extract_markdown_links(txt):
+                    pre, txt = txt.split(f"[{link_alt}]({link_url})", 1)
+                    if pre:
+                        new_nodes.append(TextNode(pre))
+                    new_nodes.append(TextNode(link_alt, TextType.LINK, link_url))
+                if txt:
+                    new_nodes.append(TextNode(txt))
+            case _:
+                new_nodes.append(n)
+
+    return new_nodes

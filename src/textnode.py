@@ -8,7 +8,9 @@ class TextType(Enum):
     CODE = "code"
     LINK = "link"
     IMAGE = "image"
-    # BLOCK = "block"
+
+    def __repr__(self) -> str:
+        return str(self)
 
 
 class TextNode:
@@ -32,4 +34,4 @@ class TextNode:
         )
 
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+        return f"TextNode({repr(self.text)}, {repr(self.text_type)}, {repr(self.url)})"
