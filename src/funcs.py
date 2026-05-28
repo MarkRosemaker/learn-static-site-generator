@@ -91,8 +91,8 @@ split_funcs: list[Callable[[list[TextNode]], list[TextNode]]] = [
     split_nodes_bold,
     split_nodes_italic,
     split_nodes_code,
+    split_nodes_image,  # process before links
     split_nodes_link,
-    split_nodes_image,
 ]
 
 
