@@ -1,5 +1,6 @@
 from textnode import TextNode, TextType
 import re
+from typing import Callable
 
 
 def split_nodes_delimiter(
@@ -26,6 +27,18 @@ def split_nodes_delimiter(
                 new_nodes.append(old_node)
 
     return new_nodes
+
+
+def split_nodes_bold(nodes: list[TextNode]) -> list[TextNode]:
+    return split_nodes_delimiter(nodes, "**", TextType.BOLD)
+
+
+def split_nodes_italic(nodes: list[TextNode]) -> list[TextNode]:
+    return split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+
+
+def split_nodes_code(nodes: list[TextNode]) -> list[TextNode]:
+    return split_nodes_delimiter(nodes, "`", TextType.CODE)
 
 
 def extract_markdown_images(text: str):
@@ -72,3 +85,20 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
                 new_nodes.append(n)
 
     return new_nodes
+
+
+split_funcs: list[Callable[[list[TextNode]], list[TextNode]]] = [
+    split_nodes_bold,
+    split_nodes_italic,
+    split_nodes_code,
+    split_nodes_link,
+    split_nodes_image,
+]
+
+
+def text_to_textnodes(text: str) -> list[TextNode]:
+    res: list[TextNode] = [TextNode(text)]
+    for f in split_funcs:
+        res = f(res)
+
+    return res
