@@ -102,3 +102,11 @@ def text_to_textnodes(text: str) -> list[TextNode]:
         res = f(res)
 
     return res
+
+
+def markdown_to_blocks(markdown: str) -> list[str]:
+    blocks: list[str] = []
+    for b in markdown.split("\n\n"):
+        if block := b.strip("\n"):
+            blocks.append(block)
+    return blocks
