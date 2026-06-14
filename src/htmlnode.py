@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from textnode import TextNode, TextType
 
 
@@ -15,16 +17,21 @@ class HTMLNode:
         self,
         tag: str,
         value: str = "",
-        props: dict[str, str] = {},
-        children: list[HTMLNode] = [],
+        props: dict[str, str] | None = None,
+        children: list[HTMLNode] | None = None,
     ):
         self.tag = tag
         self.value = value
-        self.props = props
-        self.children = children
+        self.props = props if props else {}
+        self.children = children if children else []
 
     def to_html(self) -> str:
-        raise NotImplementedError()
+        elems = ["<", self.tag, self.props_to_html(), ">", self.value]
+        for c in self.children:
+            elems.append(c.to_html())
+        elems.extend(["</", self.tag, ">"])
+
+        return "".join(elems)
 
     def props_to_html(self) -> str:
         elems: list[str] = []
