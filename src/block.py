@@ -15,7 +15,7 @@ class BlockType(Enum):
 
 
 # Pre‑compile all patterns (module‑level constants)
-RE_HEADING = re.compile(r"^#{1,6} .")
+RE_HEADING = re.compile(r"^(#{1,6}) .")
 RE_CODE = re.compile(r"(?s)^```\n.*\n```$")
 RE_QUOTE = re.compile(r"^(> {0,1}.*(?:\n|$))+$")
 RE_UNORDERED_LIST = re.compile(r"^(- .*(?:\n|$))+$")
