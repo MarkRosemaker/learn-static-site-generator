@@ -76,8 +76,12 @@ class LeafNode(HTMLNode):
         super().__init__(tag, value, props)
 
     def to_html(self) -> str:
-        if not self.value:
-            raise ValueError("leaf node is missing a value")
+        match self.tag:
+            case "img":
+                pass
+            case _:
+                if not self.value:
+                    raise ValueError(f"leaf node {self} is missing a value")
 
         if not self.tag:
             return self.value

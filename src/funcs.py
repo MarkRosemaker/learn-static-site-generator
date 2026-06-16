@@ -3,6 +3,7 @@ from block import block_to_block_type, BlockType, RE_HEADING
 from htmlnode import HTMLNode, text_node_to_html_node
 import re
 from typing import Callable
+import os
 
 
 def split_nodes_delimiter(
@@ -209,3 +210,18 @@ def extract_title(markdown: str) -> str:
 
 def generate_page(from_path: str, template_path: str, dest_path: str):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}...")
+
+    with open(from_path, encoding="utf-8") as f:
+        md = f.read()
+
+    with open(template_path, encoding="utf-8") as f:
+        tpl = f.read()
+
+    out = tpl.replace("{{ Title }}", extract_title(md)).replace(
+        "{{ Content }}", markdown_to_html_node(md).to_html()
+    )
+
+    os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+
+    with open(dest_path, "w", encoding="utf-8") as f:
+        f.write(out)
