@@ -1,4 +1,4 @@
-from textnode import TextNode, TextType
+from funcs import generate_page
 import os, shutil
 
 DIR_STATIC = "static"
@@ -27,8 +27,7 @@ def copy_to_destination_recursive(src: str, dst: str):
 
 def main():
     copy_to_destination()
-    node = TextNode("It worked!", TextType.BOLD)
-    print(node)
+    generate_page("content/index.md", "template.html", "public/index.html")
 
 
 if __name__ == "__main__":
