@@ -198,3 +198,10 @@ def quote_to_html_node(block: str) -> HTMLNode:
             raise ValueError("invalid quote block")
         new_lines.append(line.lstrip(">").strip())
     return HTMLNode("blockquote", children=text_to_children(" ".join(new_lines)))
+
+
+def extract_title(markdown: str) -> str:
+    if not markdown.startswith("# "):
+        raise Exception("not a valid title header")
+
+    return markdown.removeprefix("# ")

@@ -12,6 +12,7 @@ from funcs import (
     text_to_textnodes,
     markdown_to_blocks,
     markdown_to_html_node,
+    extract_title,
 )
 from textnode import TextNode, TextType
 
@@ -310,6 +311,14 @@ the **same** even with inline stuff
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+
+class TestExtractTitle(unittest.TestCase):
+    def test_hello(self):
+        self.assertEqual(extract_title("# Hello"), "Hello")
+
+    def test_exception(self):
+        self.assertRaises(Exception, lambda: extract_title("asdf"))
 
 
 if __name__ == "__main__":
