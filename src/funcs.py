@@ -225,3 +225,23 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
 
     with open(dest_path, "w", encoding="utf-8") as f:
         f.write(out)
+
+
+def generate_pages_recursive(src_path: str, template_path: str, dst_path: str):
+    print(f"Crawling {src_path}/...")
+    os.makedirs(dst_path, exist_ok=True)
+
+    for item in os.listdir(src_path):
+        src_item = os.path.join(src_path, item)
+        dst_item = os.path.join(dst_path, item)
+
+        if os.path.isfile(src_item):
+            if not src_item.endswith(".md"):
+                print(f"Skipping non-markdown file: {src_item}")
+                continue
+
+            dst_file = os.path.splitext(dst_item)[0] + ".html"
+            generate_page(src_item, template_path, dst_file)
+            continue
+
+        generate_pages_recursive(src_item, template_path, dst_item)

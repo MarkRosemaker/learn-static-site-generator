@@ -1,4 +1,4 @@
-from funcs import generate_page
+from funcs import generate_pages_recursive
 import os, shutil
 
 DIR_STATIC = "static"
@@ -27,7 +27,7 @@ def copy_to_destination_recursive(src: str, dst: str):
 
 def main():
     copy_to_destination()
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
 
 if __name__ == "__main__":
