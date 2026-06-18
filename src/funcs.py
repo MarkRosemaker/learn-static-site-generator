@@ -208,7 +208,7 @@ def extract_title(markdown: str) -> str:
     return markdown.removeprefix("# ")
 
 
-def generate_page(from_path: str, template_path: str, dest_path: str):
+def generate_page(basepath: str, from_path: str, template_path: str, dest_path: str):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}...")
 
     with open(from_path, encoding="utf-8") as f:
@@ -217,8 +217,11 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
     with open(template_path, encoding="utf-8") as f:
         tpl = f.read()
 
-    out = tpl.replace("{{ Title }}", extract_title(md)).replace(
-        "{{ Content }}", markdown_to_html_node(md).to_html()
+    out = (
+        tpl.replace("{{ Title }}", extract_title(md))
+        .replace("{{ Content }}", markdown_to_html_node(md).to_html())
+        .replace('href="/', f'href="{basepath}')
+        .replace('src="/', f'src="{basepath}')
     )
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
@@ -227,7 +230,9 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
         f.write(out)
 
 
-def generate_pages_recursive(src_path: str, template_path: str, dst_path: str):
+def generate_pages_recursive(
+    basepath: str, src_path: str, template_path: str, dst_path: str
+):
     print(f"Crawling {src_path}/...")
     os.makedirs(dst_path, exist_ok=True)
 
@@ -241,7 +246,7 @@ def generate_pages_recursive(src_path: str, template_path: str, dst_path: str):
                 continue
 
             dst_file = os.path.splitext(dst_item)[0] + ".html"
-            generate_page(src_item, template_path, dst_file)
+            generate_page(basepath, src_item, template_path, dst_file)
             continue
 
-        generate_pages_recursive(src_item, template_path, dst_item)
+        generate_pages_recursive(basepath, src_item, template_path, dst_item)

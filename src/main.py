@@ -1,5 +1,5 @@
 from funcs import generate_pages_recursive
-import os, shutil
+import os, shutil, sys
 
 DIR_STATIC = "static"
 DIR_DST = "public"
@@ -26,8 +26,10 @@ def copy_to_destination_recursive(src: str, dst: str):
 
 
 def main():
+    basepath = sys.argv[0] if sys.argv else "/"
+
     copy_to_destination()
-    generate_pages_recursive("content", "template.html", "public")
+    generate_pages_recursive(basepath, "content", "template.html", "public")
 
 
 if __name__ == "__main__":
