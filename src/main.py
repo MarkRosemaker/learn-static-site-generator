@@ -2,7 +2,7 @@ from funcs import generate_pages_recursive
 import os, shutil, sys
 
 DIR_STATIC = "static"
-DIR_DST = "public"
+DIR_DST = "docs"
 
 
 def copy_to_destination():
@@ -29,7 +29,7 @@ def main():
     basepath = sys.argv[0] if sys.argv else "/"
 
     copy_to_destination()
-    generate_pages_recursive(basepath, "content", "template.html", "public")
+    generate_pages_recursive(basepath, "content", "template.html", DIR_DST)
 
 
 if __name__ == "__main__":
