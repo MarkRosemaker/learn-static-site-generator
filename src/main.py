@@ -26,7 +26,7 @@ def copy_to_destination_recursive(src: str, dst: str):
 
 
 def main():
-    basepath = sys.argv[0] if sys.argv else "/"
+    basepath = sys.argv[1] if sys.argv else "/"
 
     copy_to_destination()
     generate_pages_recursive(basepath, "content", "template.html", DIR_DST)
